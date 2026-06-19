@@ -9,34 +9,40 @@
 // ─────────────────────────────────────────────────────────────
 
 const menuData = [
-  // ── Тантуни ───────────────────────────────────────────────
-  { id: '1', name: 'Тантуни с говядиной', price: 1800, category: 'Тантуни', image: 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=400&q=80', description: 'Тонко нарезанная говядина на садже, тонкий лаваш, лук, помидор и зелень', badge: 'Хит' },
-  { id: '2', name: 'Тантуни с курицей',   price: 1600, category: 'Тантуни', image: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=400&q=80', description: 'Сочная курица на садже, лаваш, сумах, петрушка и лимон' },
-  { id: '3', name: 'Тантуни микс',        price: 2000, category: 'Тантуни', image: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=400&q=80', description: 'Говядина и курица вместе, фирменные специи и свежие овощи' },
-  { id: '4', name: 'Тантуни дюрюм',       price: 2200, category: 'Тантуни', image: 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=400&q=80', description: 'Большой дюрюм с двойной порцией мяса и острым соусом', badge: 'Большой' },
+  // ── Тантуни (официальное меню Instagram @tantuni_turkish) ──
+  { id: '22', name: 'Тауық тантуни',                 price: 1950, category: 'Тантуни', image: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=400&q=80', description: 'Tavuklu tantuni — салат, лимон, халапеньо + 1 турецкий чай в подарок' },
+  { id: '23', name: 'Тауық тантуни в булке',          price: 1950, category: 'Тантуни', image: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=400&q=80', description: 'Ekmekli tavuk tantuni — салат, лимон, халапеньо + 1 турецкий чай в подарок' },
+  { id: '24', name: 'Тауық тантуни с йогуртом',       price: 2600, category: 'Тантуни', image: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=400&q=80', description: 'Yoğurtlu tavuk tantuni — салат, лимон, халапеньо + 1 турецкий чай в подарок' },
+  { id: '25', name: 'Тантуни с говядиной (лаваш)',    price: 2400, category: 'Тантуни', image: 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=400&q=80', description: 'Etli tantuni — салат, лимон, халапеньо + 1 турецкий чай в подарок' },
+  { id: '26', name: 'Тантуни с говядиной в булке',    price: 2400, category: 'Тантуни', image: 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=400&q=80', description: 'Ekmekli et tantuni — салат, лимон, халапеньо + 1 турецкий чай в подарок' },
+  { id: '27', name: 'Тантуни с говядиной и йогуртом', price: 3000, category: 'Тантуни', image: 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=400&q=80', description: 'Yoğurtlu etli tantuni — салат, лимон, халапеньо + 1 турецкий чай в подарок' },
 
-  // ── Донеры и дюрюмы ───────────────────────────────────────
-  { id: '5', name: 'Донер в лаваше',      price: 1500, category: 'Донеры и дюрюмы', image: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=400&q=80', description: 'Классический донер из говядины, картофель фри внутри, чесночный соус' },
-  { id: '6', name: 'Донер в булке',       price: 1400, category: 'Донеры и дюрюмы', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80', description: 'Сочный донер в свежей булочке с овощами и соусами' },
-  { id: '7', name: 'Дюрюм с курицей',     price: 1500, category: 'Донеры и дюрюмы', image: 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=400&q=80', description: 'Куриный донер в тонком лаваше с маринованными овощами' },
-  { id: '8', name: 'Искендер-кебаб',      price: 2600, category: 'Донеры и дюрюмы', image: 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=400&q=80', description: 'Донер на кусочках пиде, томатный соус, топлёное масло и йогурт', badge: 'Фирменное' },
-  { id: '9', name: 'Адана-кебаб',         price: 2200, category: 'Донеры и дюрюмы', image: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=400&q=80', description: 'Острый рубленый кебаб на гриле, лаваш, лук с сумахом' },
+  // ── Бургеры ─────────────────────────────────────────────────
+  { id: '28', name: 'Тантуни бургер',     price: 2400, category: 'Бургеры', image: 'https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=400&q=80', description: 'Фирменный бургер Tantuni Burger' },
+  { id: '29', name: 'Тантуни чизбургер',  price: 2600, category: 'Бургеры', image: 'https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=400&q=80', description: 'Tantuni Burger с сыром', badge: 'Новинка' },
 
-  // ── Гарниры и пиде ────────────────────────────────────────
-  { id: '10', name: 'Картофель фри',       price: 700,  category: 'Гарниры и пиде', image: 'https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?w=400&q=80', description: 'Золотистый, хрустящий, с солью' },
-  { id: '11', name: 'Пиде с сыром',        price: 1900, category: 'Гарниры и пиде', image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&q=80', description: 'Турецкая лодочка из теста с тянущимся сыром кашар' },
-  { id: '12', name: 'Пиде с мясом',        price: 2100, category: 'Гарниры и пиде', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80', description: 'Кыймалы пиде с рубленой говядиной и специями' },
-  { id: '13', name: 'Лахмаджун',           price: 1200, category: 'Гарниры и пиде', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80', description: 'Тонкая турецкая лепёшка с мясным фаршем, зеленью и лимоном', badge: 'Новинка' },
-  { id: '14', name: 'Чечевичный суп',      price: 900,  category: 'Гарниры и пиде', image: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=400&q=80', description: 'Мерджимек — нежный суп-пюре из красной чечевицы' },
-  { id: '15', name: 'Турецкий салат',      price: 800,  category: 'Гарниры и пиде', image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&q=80', description: 'Чобан-салат: помидоры, огурцы, лук, перец и зелень' },
+  // ── Сладости (фото временно общие — замените на свои) ──────
+  { id: '30', name: 'Баклава',                    price: 1500, category: 'Сладости', image: 'https://images.unsplash.com/photo-1519676867240-f03562e64548?w=400&q=80', description: 'Baklava' },
+  { id: '31', name: 'Молочная баклава (3 шт)',    price: 1500, category: 'Сладости', image: 'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=400&q=80', description: 'Sütlü baklava' },
+  { id: '32', name: 'Морковная пахлава',          price: 1500, category: 'Сладости', image: 'https://images.unsplash.com/photo-1519676867240-f03562e64548?w=400&q=80', description: 'Havuç baklava' },
+  { id: '33', name: 'Хавуч баклавасы (порция)',   price: 1200, category: 'Сладости', image: 'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=400&q=80', description: 'Havuç baklavası' },
+  { id: '34', name: 'Хавуч баклавасы (кг)',       price: 2400, category: 'Сладости', image: 'https://images.unsplash.com/photo-1519676867240-f03562e64548?w=400&q=80', description: 'Havuç baklavası' },
+  { id: '35', name: 'Мидия баклава',              price: 500,  category: 'Сладости', image: 'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=400&q=80', description: 'Midye baklavası' },
+  { id: '36', name: 'Стакан чая',                 price: 350,  category: 'Сладости', image: 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?w=400&q=80', description: 'Bardak çay' },
 
-  // ── Напитки ───────────────────────────────────────────────
-  { id: '16', name: 'Айран',               price: 500,  category: 'Напитки', image: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&q=80', description: 'Освежающий йогуртовый напиток' },
-  { id: '17', name: 'Турецкий чай',        price: 300,  category: 'Напитки', image: 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?w=400&q=80', description: 'Классический чёрный чай в стакане-тюльпане' },
-  { id: '18', name: 'Кола',                price: 600,  category: 'Напитки', image: 'https://images.unsplash.com/photo-1554866585-cd94860890b7?w=400&q=80', description: 'Охлаждённая, 0.33 л' },
-  { id: '19', name: 'Шалгам',              price: 600,  category: 'Напитки', image: 'https://images.unsplash.com/photo-1437418747212-8d9709afab22?w=400&q=80', description: 'Острый сок из чёрной моркови и репы' },
-  { id: '20', name: 'Домашний лимонад',    price: 700,  category: 'Напитки', image: 'https://images.unsplash.com/photo-1560508180-03f285f67ded?w=400&q=80', description: 'Свежий лимонад с мятой' },
-  { id: '21', name: 'Турецкий кофе',       price: 800,  category: 'Напитки', image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&q=80', description: 'Сваренный на песке, по традиционному рецепту' },
+  // ── Напитки (официальное меню Instagram) ───────────────────
+  { id: '37', name: 'Coca-Cola 0.5л',  price: 600,  category: 'Напитки', image: 'https://images.unsplash.com/photo-1554866585-cd94860890b7?w=400&q=80', description: '' },
+  { id: '38', name: 'Coca-Cola 1л',    price: 800,  category: 'Напитки', image: 'https://images.unsplash.com/photo-1554866585-cd94860890b7?w=400&q=80', description: '' },
+  { id: '39', name: 'Fanta 0.5л',      price: 600,  category: 'Напитки', image: 'https://images.unsplash.com/photo-1554866585-cd94860890b7?w=400&q=80', description: '' },
+  { id: '40', name: 'Fanta 1л',        price: 800,  category: 'Напитки', image: 'https://images.unsplash.com/photo-1554866585-cd94860890b7?w=400&q=80', description: '' },
+  { id: '41', name: 'Sprite 0.5л',     price: 500,  category: 'Напитки', image: 'https://images.unsplash.com/photo-1554866585-cd94860890b7?w=400&q=80', description: '' },
+  { id: '42', name: 'Sprite 1л',       price: 800,  category: 'Напитки', image: 'https://images.unsplash.com/photo-1554866585-cd94860890b7?w=400&q=80', description: '' },
+  { id: '43', name: 'Су Бонаква 0.5л', price: 500,  category: 'Напитки', image: 'https://images.unsplash.com/photo-1554866585-cd94860890b7?w=400&q=80', description: '' },
+  { id: '44', name: 'Су Бонаква 1л',   price: 800,  category: 'Напитки', image: 'https://images.unsplash.com/photo-1554866585-cd94860890b7?w=400&q=80', description: '' },
+  { id: '45', name: 'Айран',           price: 450,  category: 'Напитки', image: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&q=80', description: '' },
+  { id: '46', name: 'Сок (трубочка)',  price: 350,  category: 'Напитки', image: 'https://images.unsplash.com/photo-1560508180-03f285f67ded?w=400&q=80', description: '' },
+  { id: '47', name: 'Турецкий кофе',   price: 1000, category: 'Напитки', image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&q=80', description: 'Türk kahvesi' },
+  { id: '48', name: 'Турецкий чай',    price: 1600, category: 'Напитки', image: 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?w=400&q=80', description: 'Türk çayı' },
 ];
 
 // ─────────────────────────────────────────────────────────────
