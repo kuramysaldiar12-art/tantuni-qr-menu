@@ -468,7 +468,7 @@ function getStoredReviews() {
 }
 
 function renderReviews() {
-  const grid = document.getElementById('reviews-grid');
+  const grid = document.getElementById('reviews-container');
   if (!grid) return;
   const base = (typeof reviewsData !== 'undefined') ? reviewsData : [];
   // Свежие отзывы гостей показываем первыми
