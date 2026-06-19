@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────
-//  APP.JS  —  URBO COFFEE  ·  Frontend logic
+//  APP.JS  —  Tantuni Turkish  ·  Frontend logic
 //  Works in two modes:
 //   • BACKEND ON  → menu from GET /api/menu, orders to POST /api/orders
 //   • BACKEND OFF → menu from bundled menu-data.js, orders to Telegram
@@ -484,47 +484,18 @@ function renderReviews() {
 }
 
 // ── Форма отзыва ─────────────────────────────────────────────
-let reviewRating = 5;
-
-function openReviewForm() {
-  document.getElementById('review-overlay').classList.add('open');
-  document.getElementById('review-modal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeReviewForm() {
-  document.getElementById('review-overlay').classList.remove('open');
-  document.getElementById('review-modal').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
 function submitReview() {
   const name = document.getElementById('rv-name').value.trim();
   const text = document.getElementById('rv-text').value.trim();
   if (!name || !text) { showToast('Заполните имя и текст отзыва'); return; }
 
-  const review = {
-    quote: text,
-    name,
-    source: 'Гость сайта',
-    rating: reviewRating,
-    date: Date.now()
-  };
-
-  // 1) сохраняем в браузере гостя — отзыв сразу появляется на сайте
+  const review = { quote: text, name, source: 'Гость сайта', date: Date.now() };
   const arr = getStoredReviews();
   arr.push(review);
   try { localStorage.setItem(REVIEWS_KEY, JSON.stringify(arr)); } catch {}
   renderReviews();
 
-  // 2) уведомляем ресторан в Telegram
-  const msg = [
-    `⭐ *Новый отзыв на сайте*`,
-    ``,
-    `👤 ${name}`,
-    `Оценка: ${'★'.repeat(reviewRating)}${'☆'.repeat(5 - reviewRating)}`,
-    ``,
-    `«${text}»`
-  ].join('\n');
+  const msg = `⭐ *Новый отзыв на сайте*\n\n👤 ${name}\n\n«${text}»`;
   fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -533,7 +504,6 @@ function submitReview() {
 
   document.getElementById('rv-name').value = '';
   document.getElementById('rv-text').value = '';
-  closeReviewForm();
   showToast('Спасибо за отзыв! 🙏');
 }
 
@@ -606,16 +576,3 @@ initMenu();
 renderReviews();
 observeReveals();
 initCookie();
-
-// рейтинг звёздами в форме отзыва
-const starsEl = document.getElementById('stars-input');
-if (starsEl) {
-  const setStars = v => {
-    reviewRating = v;
-    starsEl.querySelectorAll('span').forEach(s =>
-      s.classList.toggle('on', Number(s.dataset.v) <= v));
-  };
-  starsEl.querySelectorAll('span').forEach(s =>
-    s.addEventListener('click', () => setStars(Number(s.dataset.v))));
-  setStars(5);
-}

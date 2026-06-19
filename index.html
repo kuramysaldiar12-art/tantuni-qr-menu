@@ -422,20 +422,7 @@
     .btn-review:hover { background: var(--brown); color: #fff; }
     .btn-review:active { transform: scale(.97); }
 
-    #review-overlay { position: fixed; inset: 0; background: rgba(20,14,9,.55); z-index: 450; opacity: 0; pointer-events: none; transition: opacity .3s; backdrop-filter: blur(3px); }
-    #review-overlay.open { opacity: 1; pointer-events: all; }
-    #review-modal {
-      position: fixed; z-index: 460; left: 50%; top: 50%; transform: translate(-50%,-46%) scale(.96);
-      width: calc(100% - 36px); max-width: 460px; background: var(--paper); border-radius: 6px;
-      padding: 30px 26px 26px; opacity: 0; pointer-events: none; transition: .3s; box-shadow: var(--shadow);
-    }
-    #review-modal.open { opacity: 1; pointer-events: all; transform: translate(-50%,-50%) scale(1); }
-    .review-modal-title { font-family: var(--serif); font-size: 27px; color: var(--brown-deep); margin-bottom: 4px; }
-    .review-modal-sub { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
-    .review-close { position: absolute; top: 16px; right: 18px; background: none; border: none; font-size: 20px; color: var(--muted); cursor: pointer; line-height: 1; }
-    .stars-input { display: flex; gap: 6px; margin-bottom: 20px; }
-    .stars-input span { font-size: 32px; color: var(--line); cursor: pointer; transition: .15s; line-height: 1; }
-    .stars-input span.on { color: var(--bronze-2); }
+    .rev-form { max-width: 480px; margin: 40px auto 0; }
     textarea.form-input { resize: vertical; min-height: 92px; font-family: var(--sans); line-height: 1.5; }
 
     /* ───── Cookie ───── */
@@ -582,8 +569,16 @@
       <div class="rev-stars">★★★★★</div>
     </div>
     <div class="rev-grid" id="reviews-container"></div>
-    <div class="rev-cta">
-      <button class="btn-review" onclick="openReviewForm()">Оставить отзыв</button>
+    <div class="rev-form reveal">
+      <div class="form-group">
+        <label class="form-label">Ваше имя</label>
+        <input class="form-input" id="rv-name" type="text" placeholder="напр. Айгерим" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Отзыв</label>
+        <textarea class="form-input" id="rv-text" placeholder="Что понравилось? Что заказывали?"></textarea>
+      </div>
+      <button class="btn-review" onclick="submitReview()">ОСТАВИТЬ ОТЗЫВ</button>
     </div>
   </div>
 </section>
@@ -656,26 +651,6 @@
   <button class="success-back" onclick="resetApp()">Вернуться в меню</button>
 </div>
 
-<!-- ───── Review form ───── -->
-<div id="review-overlay" onclick="closeReviewForm()"></div>
-<div id="review-modal">
-  <button class="review-close" onclick="closeReviewForm()">✕</button>
-  <div class="review-modal-title">Ваш отзыв</div>
-  <div class="review-modal-sub">Поделитесь впечатлением о Tantuni Turkish</div>
-  <div class="stars-input" id="stars-input">
-    <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
-  </div>
-  <div class="form-group">
-    <label class="form-label">Ваше имя</label>
-    <input class="form-input" id="rv-name" type="text" placeholder="напр. Айгерим" />
-  </div>
-  <div class="form-group">
-    <label class="form-label">Отзыв</label>
-    <textarea class="form-input" id="rv-text" placeholder="Что понравилось? Что заказывали?"></textarea>
-  </div>
-  <button class="place-order-btn" onclick="submitReview()">Отправить отзыв</button>
-</div>
-
 <!-- ───── Cookie consent ───── -->
 <div id="cookie-bar">
   <p>Мы используем cookie и локальное хранилище, чтобы сайт работал лучше и запоминал ваши отзывы.</p>
@@ -687,7 +662,7 @@
 
 <div id="toast"></div>
 
-<script src="menu-data.js?v=13"></script>
-<script src="app.js?v=13"></script>
+<script src="menu-data.js?v=14"></script>
+<script src="app.js?v=14"></script>
 </body>
 </html>
