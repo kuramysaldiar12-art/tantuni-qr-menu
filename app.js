@@ -6,12 +6,8 @@
 //  The switch is automatic (graceful fallback).
 // ─────────────────────────────────────────────────────────────
 
-// ══════════════════════════════════════════════════════════════
-//  ⚙️  TELEGRAM CONFIG  (used only as fallback when no backend)
-// ══════════════════════════════════════════════════════════════
-const TELEGRAM_BOT_TOKEN = '8671077115:AAE7YYUFG2NFKbXbpgQvEYOp-yYMZ2Cxg0E';
-const TELEGRAM_CHAT_ID   = '-5396866493';
-// ══════════════════════════════════════════════════════════════
+// Telegram fallback now goes through the backend at POST /api/notify
+// (no token/chat id stored or exposed in frontend code).
 
 // ── API config ──────────────────────────────────────────────
 const API_MENU   = '/api/menu';
@@ -278,7 +274,7 @@ function selectOrderType(type) {
 
 // ── Place Order ──────────────────────────────────────────────
 async function placeOrder() {
-  const kzNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Oral' }));
+  const kzNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Almaty' }));
   const kzMin = kzNow.getHours() * 60 + kzNow.getMinutes();
   if (kzMin < 10 * 60) {
     showToast('К сожалению, кафе сейчас закрыто. Прием заказов с 10:00 до 00:00!');
@@ -381,18 +377,17 @@ async function sendOrderViaTelegram(payload, btn) {
   ].filter(l => l !== null).join('\n');
 
   try {
-    const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+    const res = await fetch('/api/notify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text, parse_mode: 'Markdown' }),
+      body: JSON.stringify({ text }),
     });
-    const json = await res.json();
-    if (!json.ok) throw new Error(json.description || 'Telegram error');
+    if (!res.ok) throw new Error('notify failed');
     finishOrderSuccess();
   } catch (err) {
     if (btn) { btn.disabled = false; btn.textContent = 'Оформить заказ'; }
-    showToast('Ошибка отправки. Проверьте подключение.');
-    console.error(err);
+    showToast('Ошибка отправки заказа. Позвоните нам, пожалуйста.');
+    console.log('Order (no backend/Telegram reachable):', text);
   }
 }
 
@@ -423,7 +418,7 @@ function showToast(msg) {
 function updateOpenStatus() {
   // Атырау — UTC+5, работает корректно на любом устройстве мира
   const now = new Date();
-  const kzTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Oral' }));
+  const kzTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Almaty' }));
   const totalMin = kzTime.getHours() * 60 + kzTime.getMinutes();
   const open  = 10 * 60;  // 10:00
   const close = 24 * 60;       // 24:00 (полночь)
@@ -496,11 +491,11 @@ function submitReview() {
   renderReviews();
 
   const msg = `⭐ *Новый отзыв на сайте*\n\n👤 ${name}\n\n«${text}»`;
-  fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+  fetch('/api/notify', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: msg, parse_mode: 'Markdown' })
-  }).catch(() => {});
+    body: JSON.stringify({ text: msg })
+  }).catch(() => console.log('Review (no backend reachable):', msg));
 
   document.getElementById('rv-name').value = '';
   document.getElementById('rv-text').value = '';

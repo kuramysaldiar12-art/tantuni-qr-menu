@@ -14,11 +14,21 @@ import crypto from 'crypto';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+import { readFileSync } from 'fs';
 import Restaurant from './models/Restaurant.js';
 import MenuItem from './models/MenuItem.js';
 import Order from './models/Order.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// Trusted local fallback menu — prices keyed by string id, used when
+// an order references a non-Mongo id (the bundled offline menu).
+const FALLBACK_MENU = (() => {
+  const src = readFileSync(path.join(__dirname, 'menu-data.js'), 'utf8');
+  const sandbox = {};
+  new Function('out', `${src}\nout.menuData = typeof menuData !== 'undefined' ? menuData : [];`)(sandbox);
+  return new Map(sandbox.menuData.map(i => [String(i.id), i]));
+})();
 
 // ── Configuration (all overridable via environment) ──────────
 const PORT          = process.env.PORT || 3000;
@@ -242,6 +252,27 @@ app.get('/api/menu', async (req, res) => {
  *   items: [{ id?, name?, price?, quantity }]
  * }
  */
+/** POST /api/notify — generic Telegram relay used when an order/review
+ *  can't be tied to a saved DB record (e.g. static-hosting fallback). */
+app.post('/api/notify', async (req, res) => {
+  const restaurant = await resolveRestaurant(req.body?.restaurant);
+  const token  = restaurant?.telegram?.botToken || process.env.TELEGRAM_BOT_TOKEN;
+  const chatId = restaurant?.telegram?.chatId  || process.env.TELEGRAM_CHAT_ID;
+  const text = String(req.body?.text || '').slice(0, 4000);
+  if (!text) return res.status(400).json({ error: 'No text' });
+  if (!token || !chatId || !fetchFn) return res.status(503).json({ error: 'Telegram not configured' });
+  try {
+    await fetchFn(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: chatId, text, parse_mode: 'Markdown' }),
+    });
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(502).json({ error: 'Telegram send failed' });
+  }
+});
+
 app.post('/api/orders', async (req, res) => {
   try {
     const b = req.body || {};
@@ -263,6 +294,12 @@ app.post('/api/orders', async (req, res) => {
       if (line.id && mongoose.isValidObjectId(line.id)) {
         const dbItem = await MenuItem.findOne({ _id: line.id, restaurant: restaurant._id });
         if (dbItem) { name = dbItem.name; price = dbItem.price; itemRef = dbItem._id; }
+      } else if (line.id && FALLBACK_MENU.has(String(line.id))) {
+        const fallbackItem = FALLBACK_MENU.get(String(line.id));
+        name = fallbackItem.name;
+        price = fallbackItem.price;
+      } else {
+        continue; // unknown id — never trust client-supplied price
       }
       price = Number(price) || 0;
       if (!name) continue;
