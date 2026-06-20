@@ -211,19 +211,12 @@ function renderCartBody() {
     </div>`).join('');
 
   const total = cartTotal();
-  const service = Math.round(total * 0.1);
 
   body.innerHTML = `
     ${itemsHTML}
     <div class="cart-summary">
-      <div class="cart-summary-row">
-        <span>Подытог</span><span>${fmt(total)} ₸</span>
-      </div>
-      <div class="cart-summary-row">
-        <span>Сервисный сбор (10%)</span><span>${fmt(service)} ₸</span>
-      </div>
       <div class="cart-summary-row total">
-        <span>Итого</span><span>${fmt(total + service)} ₸</span>
+        <span>Итого</span><span>${fmt(total)} ₸</span>
       </div>
     </div>
     <button class="cart-next-btn" onclick="switchTab('checkout')">
@@ -285,6 +278,17 @@ function selectOrderType(type) {
 
 // ── Place Order ──────────────────────────────────────────────
 async function placeOrder() {
+  const kzNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Oral' }));
+  const kzMin = kzNow.getHours() * 60 + kzNow.getMinutes();
+  if (kzMin < 10 * 60) {
+    showToast('К сожалению, кафе сейчас закрыто. Прием заказов с 10:00 до 00:00!');
+    return;
+  }
+  if (kzMin >= 23 * 60 && orderType !== 'Delivery') {
+    showToast('После 23:00 принимаем только заказы на вынос (доставка)');
+    return;
+  }
+
   const name    = document.getElementById('f-name')?.value.trim();
   const phone   = document.getElementById('f-phone')?.value.trim();
   const addr    = document.getElementById('f-addr')?.value.trim();
@@ -301,7 +305,6 @@ async function placeOrder() {
 
   const items   = cartItems();
   const total   = cartTotal();
-  const service = Math.round(total * 0.1);
   const isDineIn = orderType === 'Dine-in';
   const tableNumber = isDineIn ? (tableFromUrl || addr) : '';
 
@@ -322,8 +325,7 @@ async function placeOrder() {
       quantity: qty,
     })),
     subtotal: total,
-    service,
-    total_price: total + service,
+    total_price: total,
   };
 
   // 1) Try the backend first.
@@ -375,8 +377,6 @@ async function sendOrderViaTelegram(payload, btn) {
     itemLines,
     ``,
     `━━━━━━━━━━━━━━━━━━━━`,
-    `📋 Подытог: ${fmt(payload.subtotal)} ₸`,
-    `📋 Сервисный сбор (10%): ${fmt(payload.service)} ₸`,
     `💰 *ИТОГО: ${fmt(payload.total_price)} ₸*`,
   ].filter(l => l !== null).join('\n');
 
@@ -425,11 +425,11 @@ function updateOpenStatus() {
   const now = new Date();
   const kzTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Oral' }));
   const totalMin = kzTime.getHours() * 60 + kzTime.getMinutes();
-  const open  = 11 * 60 + 30;  // 11:30
+  const open  = 10 * 60;  // 10:00
   const close = 24 * 60;       // 24:00 (полночь)
   const el = document.getElementById('open-status');
   if (!el) return;
-  // открыто ежедневно с 11:30 до 24:00
+  // открыто ежедневно с 10:00 до 24:00
   if (totalMin >= open && totalMin < close) {
     el.textContent = '● Открыто';
     el.style.color = '#3ecf4a';

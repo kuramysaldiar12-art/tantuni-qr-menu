@@ -26,7 +26,7 @@ const menuData = [
   { id: '31', name: 'Молочная баклава (3 шт)',    price: 1500, category: 'Сладости', image: 'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=400&q=80', description: 'Sütlü baklava' },
   { id: '32', name: 'Морковная пахлава',          price: 1500, category: 'Сладости', image: 'https://images.unsplash.com/photo-1519676867240-f03562e64548?w=400&q=80', description: 'Havuç baklava' },
   { id: '33', name: 'Хавуч баклавасы (порция)',   price: 1200, category: 'Сладости', image: 'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=400&q=80', description: 'Havuç baklavası' },
-  { id: '34', name: 'Хавуч баклавасы (кг)',       price: 2400, category: 'Сладости', image: 'https://images.unsplash.com/photo-1519676867240-f03562e64548?w=400&q=80', description: 'Havuç baklavası' },
+  { id: '34', name: 'Хавуч баклавасы на двоих',   price: 2400, category: 'Сладости', image: 'https://images.unsplash.com/photo-1519676867240-f03562e64548?w=400&q=80', description: 'Havuç baklavası' },
   { id: '35', name: 'Мидия баклава',              price: 500,  category: 'Сладости', image: 'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=400&q=80', description: 'Midye baklavası' },
   { id: '36', name: 'Стакан чая',                 price: 350,  category: 'Сладости', image: 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?w=400&q=80', description: 'Bardak çay' },
 

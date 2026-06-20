@@ -273,9 +273,6 @@ app.post('/api/orders', async (req, res) => {
 
     if (built.length === 0) return res.status(400).json({ error: 'No valid items' });
 
-    const service = Math.round(total * 0.1);
-    const totalWithService = total + service;
-
     const orderType = b.order_type === 'delivery' ? 'delivery' : 'dine_in';
     const order = await Order.create({
       restaurant:   restaurant._id,
@@ -288,7 +285,7 @@ app.post('/api/orders', async (req, res) => {
       },
       comment:     b.comment || '',
       items:       built,
-      total_price: totalWithService,
+      total_price: total,
       status:      'pending',
     });
 
@@ -296,7 +293,7 @@ app.post('/api/orders', async (req, res) => {
     sendOrderToPOS(order._id).catch(err => console.error('[POS] async error:', err));
     notifyTelegram(restaurant, order).catch(() => {});
 
-    res.status(201).json({ ok: true, orderId: order._id.toString(), status: order.status, total_price: totalWithService });
+    res.status(201).json({ ok: true, orderId: order._id.toString(), status: order.status, total_price: total });
   } catch (err) {
     console.error('POST /api/orders', err);
     res.status(500).json({ error: 'Internal error' });
